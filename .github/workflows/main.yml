@@ -36,29 +36,31 @@ jobs:
           -exec flake8 --ignore=E501 {} +
         echo "Linted all the Python files successfully"
 
-    lint_js:
-      name: Lint JavaScript Files
-      runs-on: ubuntu-latest
-      steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
+  lint_js:
+    name: Lint JavaScript Files
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Install JSHint
-        run: npm install -g jshint
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14
 
-      - name: Run Linter (excluding noise)
-        run: |
-          # Lint only your custom JS files, excluding node_modules and other irrelevant folders
-          find . -type f -name "*.js" \
-            ! -path "*/node_modules/*" \
-            ! -path "*/build/*" \
-            ! -path "*/dist/*" \
-            ! -path "*/static/*" \
-            ! -path "*/__tests__/*" \
-            -exec jshint {} +
-          echo "Linted all relevant JS files successfully"
+    - name: Install JSHint
+      run: npm install --global jshint
+
+    - name: Run JS Linter
+      run: |
+        echo "Running JSHint..."
+        find . -type f -name "*.js" \
+          ! -path "*/node_modules/*" \
+          ! -path "*/build/*" \
+          ! -path "*/dist/*" \
+          ! -path "*/static/*" \
+          ! -path "*/__tests__/*" \
+          ! -path "./server/frontend/node_modules/*" \
+          -exec jshint {} +
+        echo "✅ JavaScript linting completed"
