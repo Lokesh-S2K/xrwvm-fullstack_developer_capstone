@@ -13,6 +13,8 @@ from django.contrib.auth import login, authenticate
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
+from .models import CarMake, CarModel
+from .populate import initiate
 # from .populate import initiate
 
 
@@ -72,7 +74,21 @@ def register_user(request):
             context["status"] = True
     return JsonResponse(context)
 # ...
+def get_cars(request):
+    count = CarMake.objects.all().count()
+    if count == 0:
+        initiate()
 
+    car_models = CarModel.objects.select_related('car_make')
+    cars = []
+    for model in car_models:
+        cars.append({
+            "CarModel": model.name,
+            "CarMake": model.car_make.name,
+            "Type": model.type,
+            "Year": model.year.year
+        })
+    return JsonResponse({"CarModels": cars})
 # # Update the `get_dealerships` view to render the index page with
 # a list of dealerships
 # def get_dealerships(request):
