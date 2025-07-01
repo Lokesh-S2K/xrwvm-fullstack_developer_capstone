@@ -10,7 +10,7 @@ services:
       - mongo_data:/data/db
 
   # Node.js API backend
-  api:
+  node_api:
     build:
       context: ./database      # 👈 path to your Node.js backend inside server/
     container_name: node_api
