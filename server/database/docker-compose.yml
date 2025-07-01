@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  # Mongodb service
+  # MongoDB service
   mongo_db:
     container_name: db_container
     image: mongo:latest
@@ -11,13 +11,18 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  # Node api service
+  # Node.js API service
   api:
-    image: nodeapp
+    build: .
+    container_name: node_api
     ports:
       - 3030:3030
     depends_on: 
       - mongo_db
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: node app.js
 
 volumes:
   mongo_data: {}

@@ -1,0 +1,39 @@
+services:
+  # MongoDB service
+  mongo_db:
+    image: mongo:latest
+    container_name: mongo_db_container
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+
+  # Node.js API backend
+  api:
+    build:
+      context: ./database      # 👈 path to your Node.js backend inside server/
+    container_name: node_api
+    ports:
+      - "3030:3030"
+    depends_on:
+      - mongo_db
+      - sentiment_service
+    volumes:
+      - ./database:/usr/src/app
+    working_dir: /usr/src/app
+    command: node app.js
+
+  # Flask Sentiment Analyzer microservice
+  sentiment_service:
+    build:
+      context: ./djangoapp/microservices  # 👈 microservice path inside server/
+    container_name: sentiment_container
+    ports:
+      - "5050:5000"  # avoid 5000 port clash
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app.py
+
+volumes:
+  mongo_data: {}

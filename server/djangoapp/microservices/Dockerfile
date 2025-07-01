@@ -1,10 +1,5 @@
-FROM python:3.9.18-slim-bookworm
-
-
-WORKDIR /python-docker
-
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+FROM python:3.8-slim
+WORKDIR /app
 COPY . .
-RUN ls
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+RUN pip install flask nltk && python -c "import nltk; nltk.download('vader_lexicon')"
+CMD ["python", "app.py"]
