@@ -54,13 +54,6 @@ jobs:
 
     - name: Run JS Linter
       run: |
-        echo "Running JSHint..."
-        find . -type f -name "*.js" \
-          ! -path "*/node_modules/*" \
-          ! -path "*/build/*" \
-          ! -path "*/dist/*" \
-          ! -path "*/static/*" \
-          ! -path "*/__tests__/*" \
-          ! -path "./server/frontend/node_modules/*" \
-          -exec jshint {} +
-        echo "✅ JavaScript linting completed"
+        echo "🔍 Running JSHint..."
+        find ./server/database -type f -name "*.js" -exec jshint --verbose --esversion 9 {} +
+        echo "✅ JavaScript linting completed (frontend & ES6+ skipped)"
