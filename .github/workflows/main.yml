@@ -36,22 +36,29 @@ jobs:
           -exec flake8 --ignore=E501 {} +
         echo "Linted all the Python files successfully"
 
-  lint_js:
-    name: Lint JavaScript Files
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+    lint_js:
+      name: Lint JavaScript Files
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 14
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
 
-    - name: Install JSHint
-      run: npm install jshint --global
+      - name: Install JSHint
+        run: npm install -g jshint
 
-    - name: Run Linter
-      run: |
-        find ./server/database -name "*.js" -exec jshint {} +
-        echo "Linted all the JS files successfully"
+      - name: Run Linter (excluding noise)
+        run: |
+          # Lint only your custom JS files, excluding node_modules and other irrelevant folders
+          find . -type f -name "*.js" \
+            ! -path "*/node_modules/*" \
+            ! -path "*/build/*" \
+            ! -path "*/dist/*" \
+            ! -path "*/static/*" \
+            ! -path "*/__tests__/*" \
+            -exec jshint {} +
+          echo "Linted all relevant JS files successfully"
