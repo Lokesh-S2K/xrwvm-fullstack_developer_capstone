@@ -68,4 +68,4 @@ jobs:
           ! -path "*/test/*" \
           ! -path "*/env/*" \
           -exec jshint {} + || true
-        echo "✅ JS linting
+        echo "✅ JS linting"
