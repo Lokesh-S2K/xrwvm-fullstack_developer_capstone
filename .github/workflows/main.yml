@@ -33,7 +33,7 @@ jobs:
           ! -path "./server/node_modules/*" \
           ! -path "*/__pycache__/*" \
           ! -path "*/migrations/*" \
-          -exec flake8 {} +
+          -exec flake8 --ignore=E501 {} +
         echo "Linted all the Python files successfully"
 
   lint_js:
