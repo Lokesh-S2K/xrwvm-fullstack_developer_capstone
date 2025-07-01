@@ -5,7 +5,7 @@ import Header from '../Header/Header';
 
 const Login = ({ onClose }) => {
 
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [open,setOpen] = useState(true)
 
@@ -20,13 +20,13 @@ const Login = ({ onClose }) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            "userName": userName,
+            "username": username,
             "password": password
         }),
     });
     
     const json = await res.json();
-    if (json.status != null && json.status === "Authenticated") {
+    if (json.status === true) {
         sessionStorage.setItem('username', json.userName);
         setOpen(false);        
     }
@@ -53,7 +53,7 @@ const Login = ({ onClose }) => {
           <form className="login_panel" style={{}} onSubmit={login}>
               <div>
               <span className="input_field">Username </span>
-              <input type="text"  name="username" placeholder="Username" className="input_field" onChange={(e) => setUserName(e.target.value)}/>
+              <input type="text"  name="username" placeholder="Username" className="input_field" onChange={(e) => setUsername(e.target.value)}/>
               </div>
               <div>
               <span className="input_field">Password </span>
