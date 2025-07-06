@@ -11,7 +11,7 @@ const port = process.env.PORT || 3030;
 // Middleware
 app.use(cors());
 app.use(express.json()); // Parses incoming JSON requests
-
+console.log("MONGO_URI:", process.env.MONGO_URI);
 // MongoDB Connection + Initial Data Load
 async function initDatabase() {
   try {
