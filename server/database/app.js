@@ -1,31 +1,33 @@
-require("dotenv").config();  // At the top of app.js or db.js
+require("dotenv").config(); // Load .env variables
 const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const cors = require('cors');
-const app = express();
-const port = 3030;
+const Reviews = require('./review');
+const Dealerships = require('./dealership');
 
+const app = express();
+const port = process.env.PORT || 3030;
 
 // Middleware
 app.use(cors());
-app.use(express.json()); // ✅ handles raw JSON body
+app.use(express.json()); // Parses incoming JSON requests
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-  console.log('✅ Connected to MongoDB');
-
-  // Load JSON data and insert
-  const reviews_data = JSON.parse(fs.readFileSync("data/reviews.json", 'utf8'));
-  const dealerships_data = JSON.parse(fs.readFileSync("data/dealerships.json", 'utf8'));
-
+// MongoDB Connection + Initial Data Load
+async function initDatabase() {
   try {
-    const Reviews = require('./review');
-    const Dealerships = require('./dealership');
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
+    console.log('✅ Connected to MongoDB');
+
+    // Load initial JSON data
+    const reviews_data = JSON.parse(fs.readFileSync("data/reviews.json", 'utf8'));
+    const dealerships_data = JSON.parse(fs.readFileSync("data/dealerships.json", 'utf8'));
+
+    // Insert into collections
     await Reviews.deleteMany({});
     await Reviews.insertMany(reviews_data.reviews);
 
@@ -34,16 +36,9 @@ mongoose.connect(process.env.MONGO_URI, {
 
     console.log('✅ Database populated successfully');
   } catch (err) {
-    console.error('❌ Error populating DB:', err);
+    console.error('❌ MongoDB init error:', err);
   }
-})
-.catch(err => {
-  console.error('❌ MongoDB connection error:', err);
-});
-
-// Models
-const Reviews = require('./review');
-const Dealerships = require('./dealership');
+}
 
 // Routes
 app.get('/', (req, res) => {
@@ -112,7 +107,8 @@ app.post('/insert_review', async (req, res) => {
   }
 });
 
-// Start server
+// Start Server and Init DB
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
+  initDatabase(); // connect + populate DB
 });
