@@ -10,10 +10,7 @@ app.use(cors());
 app.use(express.json()); // ✅ handles raw JSON body
 
 // MongoDB connection
-mongoose.connect('mongodb://mongo_db:27017/dealershipsDB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI)
 .then(async () => {
   console.log('✅ Connected to MongoDB');
 
