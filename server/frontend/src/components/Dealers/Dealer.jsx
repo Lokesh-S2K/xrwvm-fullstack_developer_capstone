@@ -11,8 +11,8 @@ const Dealer = () => {
   const [reviews, setReviews] = useState([]);
   const [unreviewed, setUnreviewed] = useState(false);
 
-  const dealer_url = `/djangoapp/dealer/${id}`;
-  const reviews_url = `/djangoapp/reviews/dealer/${id}`;
+  const dealer_url = `${process.env.REACT_APP_BACKEND_URL}/djangoapp/dealer/${id}`;
+  const reviews_url = `${process.env.REACT_APP_BACKEND_URL}//djangoapp/reviews/dealer/${id}`;
   const post_review = `/postreview/${id}`;
 
   const get_dealer = async () => {

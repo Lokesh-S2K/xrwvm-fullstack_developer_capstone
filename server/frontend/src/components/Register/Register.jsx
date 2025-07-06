@@ -29,7 +29,7 @@ const Register = () => {
       return;
     }
 
-    let register_url = window.location.origin + "/djangoapp/register";
+    let register_url = window.location.origin + "${process.env.REACT_APP_BACKEND_URL}/djangoapp/register";
 
     try {
       setIsLoading(true);

@@ -9,7 +9,7 @@ const Dealers = () => {
   const [states, setStates] = useState([]);
 
   // Base endpoint for fetching dealers
-  const dealer_url = "/djangoapp/get_dealers";
+  const dealer_url = "${process.env.REACT_APP_BACKEND_URL}/djangoapp/get_dealers";
 
   // Fetch all dealers and extract unique states
   const get_dealers = async () => {

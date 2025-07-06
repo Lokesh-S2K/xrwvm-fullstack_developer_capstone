@@ -13,9 +13,9 @@ const PostReview = () => {
   const [date, setDate] = useState("");
   const [carmodels, setCarmodels] = useState([]);
 
-  const dealer_url = `/djangoapp/dealer/${id}`;
-  const review_url = `/djangoapp/add_review`;
-  const carmodels_url = `/djangoapp/get_cars`;
+  const dealer_url = `${process.env.REACT_APP_BACKEND_URL}/djangoapp/dealer/${id}`;
+  const review_url = `${process.env.REACT_APP_BACKEND_URL}/djangoapp/add_review`;
+  const carmodels_url = `${process.env.REACT_APP_BACKEND_URL}/djangoapp/get_cars`;
 
   const postreview = async () => {
     let firstname = sessionStorage.getItem("firstname");

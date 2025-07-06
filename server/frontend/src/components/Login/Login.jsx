@@ -9,7 +9,7 @@ const Login = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [open,setOpen] = useState(true)
 
-  let login_url = window.location.origin+"/djangoapp/login";
+  let login_url = window.location.origin+"${process.env.REACT_APP_BACKEND_URL}/djangoapp/login";
 
   const login = async (e) => {
     e.preventDefault();
