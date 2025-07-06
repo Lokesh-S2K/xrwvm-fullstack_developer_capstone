@@ -1,3 +1,4 @@
+require("dotenv").config();  // At the top of app.js or db.js
 const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
@@ -5,13 +6,16 @@ const cors = require('cors');
 const app = express();
 const port = 3030;
 
+
 // Middleware
 app.use(cors());
 app.use(express.json()); // ✅ handles raw JSON body
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-.then(async () => {
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
   console.log('✅ Connected to MongoDB');
 
   // Load JSON data and insert
