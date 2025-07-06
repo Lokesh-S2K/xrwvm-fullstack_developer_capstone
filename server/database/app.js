@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json()); // ✅ handles raw JSON body
 
 // MongoDB connection
-mongoose.connect('mongodb://db_container:27017/dealershipsDB', {
+mongoose.connect('mongodb://mongo_db:27017/dealershipsDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })

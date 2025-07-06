@@ -7,7 +7,7 @@ from django.db import models
 class CarMake(models.Model):
     name = models.CharField(null=False, max_length=100)
     description = models.TextField()
-
+    
     def __str__(self):
         return self.name
 

@@ -79,6 +79,13 @@ const Dealer = () => {
           reviews.map((review, index) => (
             <div className="review_panel" key={index}>
               <div className="review">{review.review}</div>
+
+              {review.sentiment && (
+                <div className={`sentiment ${review.sentiment}`}>
+                  Sentiment: <strong>{review.sentiment}</strong>
+                </div>
+              )}
+
               <div className="reviewer">
                 {review.name} {review.car_make} {review.car_model} {review.car_year}
               </div>
@@ -89,5 +96,6 @@ const Dealer = () => {
     </div>
   );
 };
+                     
 
 export default Dealer;

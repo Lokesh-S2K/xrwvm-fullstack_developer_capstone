@@ -1,5 +1,4 @@
 services:
-  # MongoDB service
   mongo_db:
     image: mongo:latest
     container_name: mongo_db_container
@@ -9,10 +8,23 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  # Node.js API backend
+  django_web:
+    build:
+      context: .
+      dockerfile: Dockerfile  # make sure this Dockerfile is in the same dir
+    container_name: django_web
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - node_api
+
+
+
   node_api:
     build:
-      context: ./database      # 👈 path to your Node.js backend inside server/
+      context: ./database
     container_name: node_api
     ports:
       - "3030:3030"
@@ -24,16 +36,14 @@ services:
     working_dir: /usr/src/app
     command: node app.js
 
-  # Flask Sentiment Analyzer microservice
   sentiment_service:
     build:
-      context: ./djangoapp/microservices  # 👈 microservice path inside server/
+      context: ./djangoapp/microservices
     container_name: sentiment_container
     ports:
-      - "5050:5000"  # avoid 5000 port clash
+      - "5050:5000"
     environment:
       - FLASK_ENV=development
-      - FLASK_APP=app.py
 
 volumes:
   mongo_data: {}
